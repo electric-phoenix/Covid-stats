@@ -12,6 +12,7 @@ for Nations in stats['Countries']:
     new_cases = Nations['NewConfirmed']
     total_confirmed = Nations['TotalConfirmed']
     Country[name]=new_cases
+print(25*"=","Daily Covid-19 cases by country",25*"=")
 while True:
     cname=input('Enter country: ')
     if cname=='exit' or cname == 'Exit':
