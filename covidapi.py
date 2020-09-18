@@ -14,7 +14,7 @@ for Nations in stats['Countries']:
     Country[name]=new_cases
 print(25*"=","Daily Covid-19 cases by country",25*"=")
 while True:
-    cname=input('Enter country: ')
+    cname=input('Enter country: ').title()
     if cname=='exit' or cname == 'Exit':
         break 
     try:
