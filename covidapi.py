@@ -20,4 +20,4 @@ while True:
     try:
         print("Today's cases for", cname,":", Country[cname])
     except KeyError:
-        print("Invalid input\n Check your spelling, make sure the first letter is capitalised")    
+        print("Invalid input\n Check your spelling")    
