@@ -7,27 +7,42 @@ with urlopen("https://api.covid19api.com/summary") as resp:
     source = resp.read()
 
 stats = json.loads(source)
-Country = dict()
+Cases = dict()
+Totalc = dict()
+Totald=dict()
+Deaths=dict()
 for Nations in stats['Countries']:
     name = Nations['Country']
-    new_cases = Nations['NewConfirmed']
-    total_confirmed = Nations['TotalConfirmed']
-    Country[name]=new_cases 
+    Cases[name] = Nations['NewConfirmed']
+    Totalc[name]=Nations['TotalConfirmed']
+    Totald[name]=Nations['TotalDeaths']
+    Deaths[name]=Nations['NewDeaths']
 
-token = 'Enter Discord Bot token here'
+token = 'Enter discord bot token here'
 
 
 bot = commands.Bot(command_prefix='!')
 print('Logged in as {0.user}'.format(bot))
-@bot.command(name='cases', help='enter the name of the country whose daily covid case you want to know', pass_context=True)
+@bot.command(name='cgeneral', help='enter the name of the country whose covid-19 statistics you want to know', pass_context=True)
 async def coron(ctx, *, info):
     cname= info.title()
     try:
-        Country[cname]
+        Cases[cname]
     except KeyError:
         await ctx.send("Invalid input\nCheck your spelling")
-
-    await ctx.send(f"Today's cases for {cname}: {Country[cname]}")
-
+    await ctx.send(f"Covid-19 statistics of {cname}")
+    await ctx.send(f"Today's cases:     {Cases[cname]}")
+    await ctx.send(f"Total cases:       {Totalc[cname]}")
+    await ctx.send(f"Today's deaths:    {Deaths[cname]}")
+    await ctx.send(f"Total deaths:      {Totald[cname]}")
+    
+@bot.command(name='cstats', pass_context=True)
+async def fullstats(ctx, *, info):
+    cname= info.title()
+    try:
+        Cases[cname]
+    except KeyError:
+        await ctx.send("Invalid input\nCheck your spelling")
+    await ctx.send(f"Today's cases in {cname}: {Cases[cname]}")
 
 bot.run(token)
