@@ -1,0 +1,33 @@
+import discord
+from discord.ext import commands
+import json
+from urllib.request import urlopen
+
+with urlopen("https://api.covid19api.com/summary") as resp:
+    source = resp.read()
+
+stats = json.loads(source)
+Country = dict()
+for Nations in stats['Countries']:
+    name = Nations['Country']
+    new_cases = Nations['NewConfirmed']
+    total_confirmed = Nations['TotalConfirmed']
+    Country[name]=new_cases 
+
+token = 'Enter Discord Bot token here'
+
+
+bot = commands.Bot(command_prefix='!')
+print('Logged in as {0.user}'.format(bot))
+@bot.command(name='cases', help='enter the name of the country whose daily covid case you want to know', pass_context=True)
+async def coron(ctx, *, info):
+    cname= info.title()
+    try:
+        Country[cname]
+    except KeyError:
+        await ctx.send("Invalid input\nCheck your spelling")
+
+    await ctx.send(f"Today's cases for {cname}: {Country[cname]}")
+
+
+bot.run(token)
